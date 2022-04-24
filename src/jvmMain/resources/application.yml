@@ -2,9 +2,13 @@ integration:
   open-proxy-space:
     url: 'https://openproxy.space'
     delay: 60000
+    connectTimeout: 20000
+    readTimeout: 20000
   proxy-scrape:
     url: 'https://api.proxyscrape.com/v2'
     delay: 60000
+    connectTimeout: 60000
+    readTimeout: 20000
     http:
       path: '/?request=getproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all'
       enabled: true
@@ -17,6 +21,8 @@ integration:
   proxy-scan:
     url: "https://www.proxyscan.io"
     delay: 60000
+    connectTimeout: 20000
+    readTimeout: 20000
     http:
       path: '/download?type=http'
       enabled: true
@@ -32,6 +38,8 @@ integration:
   the-speed-x:
     url: 'https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master'
     delay: 60000
+    connectTimeout: 20000
+    readTimeout: 20000
     http:
       path: '/http.txt'
       enabled: true

@@ -24,6 +24,9 @@ class CollectorsTest {
     @Autowired
     @Qualifier("proxyScanCollector")
     lateinit var proxyScanCollector: ProxyCollector
+    @Autowired
+    @Qualifier("openProxySpaceCollector")
+    lateinit var openProxySpaceCollector: ProxyCollector
 
     @Autowired
     lateinit var theSpeedXCollectorProperties: TheSpeedXCollectorProperties
@@ -31,6 +34,8 @@ class CollectorsTest {
     lateinit var proxyScrapeCollectorProperties: ProxyScrapeCollectorProperties
     @Autowired
     lateinit var proxyScanCollectorProperties: ProxyScanCollectorProperties
+    @Autowired
+    lateinit var openProxySpaceCollectorProperties: OpenProxySpaceCollectorProperties
 
     @Test
     fun `theSpeedXCollectorTest`() {
@@ -38,16 +43,22 @@ class CollectorsTest {
     }
 
     @Test
-    fun `theProxyScrapeCollectorTest`() {
+    fun `proxyScrapeCollectorTest`() {
         assertProxyCollector(proxyScrapeCollector, proxyScrapeCollectorProperties)
     }
 
     @Test
-    fun `theProxyScanCollectorTest`() {
+    fun `proxyScanCollectorTest`() {
         assertProxyCollector(proxyScanCollector, proxyScanCollectorProperties)
     }
 
+    @Test
+    fun `openProxySpaceCollectorTest`() {
+        assertProxyCollector(openProxySpaceCollector, openProxySpaceCollectorProperties)
+    }
+
     fun assertProxyCollector(collector: ProxyCollector, properties: ProxyCollectorProperties) {
+        log.info("Collector: ${collector.javaClass}")
         if (properties.http.enabled) {
             val httpList = collector.getHttpProxy(properties).second
             log.info("http proxy size:${httpList.size}")
@@ -65,7 +76,7 @@ class CollectorsTest {
         }
         if (properties.socks5.enabled) {
             val socks5List = collector.getSOCKS5Proxy(properties).second
-            log.info("socks5 proxy size:${socks5List.size}")
+            log.info("socks5 proxy size:${socks5List.size}\n")
             assertTrue { socks5List.isNotEmpty() }
         }
     }

@@ -21,20 +21,20 @@ integration:
   proxy-scan:
     url: "https://www.proxyscan.io"
     delay: 60000
-    connectTimeout: 20000
-    readTimeout: 20000
+    connectTimeout: 60000
+    readTimeout: 60000
     http:
       path: '/download?type=http'
-      enabled: true
+      enabled: false
     https:
       path: '/download?type=https'
-      enabled: true
+      enabled: false
     socks4:
       path: '/download?type=socks4'
-      enabled: true
+      enabled: false
     socks5:
       path: '/download?type=socks5'
-      enabled: true
+      enabled: false
   the-speed-x:
     url: 'https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master'
     delay: 60000

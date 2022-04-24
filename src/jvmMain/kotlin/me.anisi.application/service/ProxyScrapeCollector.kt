@@ -1,23 +1,9 @@
 package me.anisi.application.service
 
-import me.anisi.application.AddressProxyDTO
-import me.anisi.application.ProxyCollectorProperties
-import java.time.LocalDateTime
+import me.anisi.application.ProxyScrapeCollectorProperties
+import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.stereotype.Component
 
-class ProxyScrapeCollector : ProxyCollector {
-    override fun getHttpProxy(properties: ProxyCollectorProperties): Pair<LocalDateTime, List<AddressProxyDTO>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getHttpsProxy(properties: ProxyCollectorProperties): Pair<LocalDateTime, List<AddressProxyDTO>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getSOCKS4Proxy(properties: ProxyCollectorProperties): Pair<LocalDateTime, List<AddressProxyDTO>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getSOCKS5Proxy(properties: ProxyCollectorProperties): Pair<LocalDateTime, List<AddressProxyDTO>> {
-        TODO("Not yet implemented")
-    }
-}
+@Component("proxyScrapeCollector")
+@EnableConfigurationProperties(ProxyScrapeCollectorProperties::class)
+class ProxyScrapeCollector(val properties: ProxyScrapeCollectorProperties) : ProxyCollector

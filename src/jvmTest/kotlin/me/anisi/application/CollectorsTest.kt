@@ -3,31 +3,70 @@ package me.anisi.application
 import me.anisi.application.service.ProxyCollector
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.MethodSource
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class CollectorsTest {
 
-
     companion object {
-        @Autowired
-        lateinit var theSpeedXCollector: ProxyCollector
-        @Autowired
-        lateinit var theSpeedXCollectorProperties: ProxyCollectorProperties
-        @JvmStatic
-        fun data() = listOf(
-            Arguments.of(theSpeedXCollector, theSpeedXCollectorProperties)
-        )
+        private val log = LoggerFactory.getLogger(CollectorsTest::class.java)
     }
 
-    @ParameterizedTest(name = "collector: {0}")
-    @MethodSource("data")
-    fun `theSpeedXCollectorTest`(collector: ProxyCollector, properties: ProxyCollectorProperties) {
-//        assertTrue { theSpeedXCollector.getHttpProxy(theSpeedXCollectorProperties).second.isNotEmpty() }
-        assertTrue { collector.getHttpProxy(properties).second.isNotEmpty() }
+    @Autowired
+    @Qualifier("theSpeedXCollector")
+    lateinit var theSpeedXCollector: ProxyCollector
+    @Autowired
+    @Qualifier("proxyScrapeCollector")
+    lateinit var proxyScrapeCollector: ProxyCollector
+    @Autowired
+    @Qualifier("proxyScanCollector")
+    lateinit var proxyScanCollector: ProxyCollector
+
+    @Autowired
+    lateinit var theSpeedXCollectorProperties: TheSpeedXCollectorProperties
+    @Autowired
+    lateinit var proxyScrapeCollectorProperties: ProxyScrapeCollectorProperties
+    @Autowired
+    lateinit var proxyScanCollectorProperties: ProxyScanCollectorProperties
+
+    @Test
+    fun `theSpeedXCollectorTest`() {
+        assertProxyCollector(theSpeedXCollector, theSpeedXCollectorProperties)
+    }
+
+    @Test
+    fun `theProxyScrapeCollectorTest`() {
+        assertProxyCollector(proxyScrapeCollector, proxyScrapeCollectorProperties)
+    }
+
+    @Test
+    fun `theProxyScanCollectorTest`() {
+        assertProxyCollector(proxyScanCollector, proxyScanCollectorProperties)
+    }
+
+    fun assertProxyCollector(collector: ProxyCollector, properties: ProxyCollectorProperties) {
+        if (properties.http.enabled) {
+            val httpList = collector.getHttpProxy(properties).second
+            log.info("http proxy size:${httpList.size}")
+            assertTrue { httpList.isNotEmpty() }
+        }
+        if (properties.https.enabled) {
+            val httpsList = collector.getHttpsProxy(properties).second
+            log.info("https proxy size:${httpsList.size}")
+            assertTrue { httpsList.isNotEmpty() }
+        }
+        if (properties.socks4.enabled) {
+            val socks4List = collector.getSOCKS4Proxy(properties).second
+            log.info("socks4 proxy size:${socks4List.size}")
+            assertTrue { socks4List.isNotEmpty() }
+        }
+        if (properties.socks5.enabled) {
+            val socks5List = collector.getSOCKS5Proxy(properties).second
+            log.info("socks5 proxy size:${socks5List.size}")
+            assertTrue { socks5List.isNotEmpty() }
+        }
     }
 }

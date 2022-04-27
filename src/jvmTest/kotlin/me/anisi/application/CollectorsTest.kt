@@ -27,6 +27,9 @@ class CollectorsTest {
     @Autowired
     @Qualifier("openProxySpaceCollector")
     lateinit var openProxySpaceCollector: ProxyCollector
+    @Autowired
+    @Qualifier("premiumProxyCollector")
+    lateinit var premiumProxyCollector: ProxyCollector
 
     @Autowired
     lateinit var theSpeedXCollectorProperties: TheSpeedXCollectorProperties
@@ -36,6 +39,8 @@ class CollectorsTest {
     lateinit var proxyScanCollectorProperties: ProxyScanCollectorProperties
     @Autowired
     lateinit var openProxySpaceCollectorProperties: OpenProxySpaceCollectorProperties
+    @Autowired
+    lateinit var premiumProxyCollectorProperties: PremiumProxyCollectorProperties
 
     @Test
     fun `theSpeedXCollectorTest`() {
@@ -57,25 +62,30 @@ class CollectorsTest {
         assertProxyCollector(openProxySpaceCollector, openProxySpaceCollectorProperties)
     }
 
+    @Test
+    fun `premiumProxyCollectorTest`() {
+        assertProxyCollector(premiumProxyCollector, premiumProxyCollectorProperties)
+    }
+
     fun assertProxyCollector(collector: ProxyCollector, properties: ProxyCollectorProperties) {
         log.info("Collector: ${collector.javaClass}")
         if (properties.http.enabled) {
-            val httpList = collector.getHttpProxy(properties).second
+            val httpList = collector.getHttpProxy()
             log.info("http proxy size:${httpList.size}")
             assertTrue { httpList.isNotEmpty() }
         }
         if (properties.https.enabled) {
-            val httpsList = collector.getHttpsProxy(properties).second
+            val httpsList = collector.getHttpsProxy()
             log.info("https proxy size:${httpsList.size}")
             assertTrue { httpsList.isNotEmpty() }
         }
         if (properties.socks4.enabled) {
-            val socks4List = collector.getSOCKS4Proxy(properties).second
+            val socks4List = collector.getSOCKS4Proxy()
             log.info("socks4 proxy size:${socks4List.size}")
             assertTrue { socks4List.isNotEmpty() }
         }
         if (properties.socks5.enabled) {
-            val socks5List = collector.getSOCKS5Proxy(properties).second
+            val socks5List = collector.getSOCKS5Proxy()
             log.info("socks5 proxy size:${socks5List.size}\n")
             assertTrue { socks5List.isNotEmpty() }
         }

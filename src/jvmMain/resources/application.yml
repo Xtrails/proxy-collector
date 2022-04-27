@@ -1,3 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/proxy-collector
+    username: postgres
+    password: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
 integration:
   open-proxy-space:
     url: 'https://openproxy.space'
@@ -6,7 +17,7 @@ integration:
     readTimeout: 20000
   proxy-scrape:
     url: 'https://api.proxyscrape.com/v2'
-    delay: 60000
+    delay: 1800000
     connectTimeout: 60000
     readTimeout: 20000
     http:
@@ -37,7 +48,7 @@ integration:
       enabled: false
   the-speed-x:
     url: 'https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master'
-    delay: 60000
+    delay: 1800000
     connectTimeout: 20000
     readTimeout: 20000
     http:
@@ -49,3 +60,13 @@ integration:
     socks5:
       path: '/socks5.txt'
       enabled: true
+  premium-proxy:
+    url: 'https://premiumproxy.net'
+#    url: 'https://spys.one'
+    delay: 60000
+    connectTimeout: 20000
+    readTimeout: 20000
+    http:
+      path: '/full-proxy-list'
+#      path: '/en/socks-proxy-list/'
+      enabled: false

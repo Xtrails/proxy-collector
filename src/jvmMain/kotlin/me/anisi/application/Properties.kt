@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 
 data class ProxyTypeProperties(var path: String?, var enabled: Boolean = false) {
-    constructor(): this(null, false)
+    constructor() : this(null, false)
 }
 
 open class ProxyCollectorProperties(
@@ -16,7 +16,12 @@ open class ProxyCollectorProperties(
     val https: ProxyTypeProperties,
     val socks4: ProxyTypeProperties,
     val socks5: ProxyTypeProperties
-)
+) {
+    fun getCollectorName() = this.javaClass
+        .canonicalName
+        .split(".")[3]
+        .replace("Properties", "")
+}
 
 @ConstructorBinding
 @ConfigurationProperties(prefix = "integration.open-proxy-space")
@@ -60,6 +65,19 @@ class ProxyScanCollectorProperties(
 @ConstructorBinding
 @ConfigurationProperties(prefix = "integration.the-speed-x")
 class TheSpeedXCollectorProperties(
+    url: String,
+    delay: Int,
+    connectTimeout: Int,
+    readTimeout: Int,
+    http: ProxyTypeProperties = ProxyTypeProperties(),
+    https: ProxyTypeProperties = ProxyTypeProperties(),
+    socks4: ProxyTypeProperties = ProxyTypeProperties(),
+    socks5: ProxyTypeProperties = ProxyTypeProperties()
+) : ProxyCollectorProperties(url, delay, connectTimeout, readTimeout, http, https, socks4, socks5)
+
+@ConstructorBinding
+@ConfigurationProperties(prefix = "integration.premium-proxy")
+class PremiumProxyCollectorProperties(
     url: String,
     delay: Int,
     connectTimeout: Int,

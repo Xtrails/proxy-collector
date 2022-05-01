@@ -52,7 +52,7 @@ abstract class ProxyCollector(open var properties: ProxyCollectorProperties) {
                 val stringList = line!!.split(":")
                 val host = stringList[0]
                 val port = stringList[1]
-                proxyAddressDTOList.add(ProxyAddressDTO(host, port, collectorName, createDateTime))
+                proxyAddressDTOList += ProxyAddressDTO(host, port, collectorName, createDateTime)
             }
         }
         return proxyAddressDTOList

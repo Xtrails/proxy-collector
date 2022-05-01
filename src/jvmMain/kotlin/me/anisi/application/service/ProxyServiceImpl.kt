@@ -32,11 +32,10 @@ class ProxyServiceImpl(
         socks5AddressRepository.saveAll(proxyMapper.mapSocks5(proxyAddressList))
     }
 
-    override fun getCountAllProxy(): Map<String, Long> =
-        hashMapOf(
-            Pair("HTTP", httpAddressRepository.count()),
-            Pair("HTTPS", httpsAddressRepository.count()),
-            Pair("SOCKS4", socks4AddressRepository.count()),
-            Pair("SOCKS5", socks5AddressRepository.count())
-        )
+    override fun getCountAllProxy(): Map<String, Long> = hashMapOf(
+        "HTTP" to httpAddressRepository.count(),
+        "HTTPS" to httpsAddressRepository.count(),
+        "SOCKS4" to socks4AddressRepository.count(),
+        "SOCKS5" to socks5AddressRepository.count()
+    )
 }
